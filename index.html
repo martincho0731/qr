@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA QR Scanner</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="manifest.json">
+    
+</head>
+<body>
+    <h1>Escáner de Código QR</h1>
+    <div id="qr-reader"></div>
+    <p id="result">Esperando escaneo...</p>
+
+    <!-- Carga la librería antes del script -->
+    <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+    <script src="script.js"></script>
+    
+</body>
+</html>
