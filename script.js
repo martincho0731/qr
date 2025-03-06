@@ -14,12 +14,19 @@ document.addEventListener("DOMContentLoaded", () => {
     // Cargar datos guardados en LocalStorage
     const savedResult = localStorage.getItem("lastScannedQR");
     if (savedResult) {
-        resultContainer.innerText = `Último código escaneado: ${savedResult}`;
+        resultContainer.innerHTML = `Último código escaneado: <a href="${savedResult}" target="_blank">${savedResult}</a>`;
     }
 
     const onScanSuccess = (decodedText) => {
-        resultContainer.innerText = `Código detectado: ${decodedText}`;
+        resultContainer.innerHTML = `Código detectado: <a href="${decodedText}" target="_blank">${decodedText}</a>`;
         localStorage.setItem("lastScannedQR", decodedText); // Guardar en LocalStorage
+
+        // Preguntar si redirigir
+        if (decodedText.startsWith("http://") || decodedText.startsWith("https://")) {
+            if (confirm("¿Quieres ir al enlace detectado?")) {
+                window.location.href = decodedText;
+            }
+        }
     };
 
     const onScanFailure = (error) => {
