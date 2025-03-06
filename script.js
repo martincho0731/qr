@@ -8,8 +8,15 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultContainer = document.getElementById("result");
     let qrReader;
 
+    // Cargar datos guardados en LocalStorage
+    const savedResult = localStorage.getItem("lastScannedQR");
+    if (savedResult) {
+        resultContainer.innerText = `Último código escaneado: ${savedResult}`;
+    }
+
     const onScanSuccess = (decodedText) => {
         resultContainer.innerText = `Código detectado: ${decodedText}`;
+        localStorage.setItem("lastScannedQR", decodedText); // Guardar en LocalStorage
     };
 
     const onScanFailure = (error) => {

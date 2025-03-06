@@ -1,8 +1,11 @@
 {
     "name": "PWA QR Scanner",
     "short_name": "QR Scanner",
-    "start_url": "index.html",
+    "description": "Una aplicación web progresiva para escanear códigos QR.",
+    "start_url": "./index.html",
+    "scope": "./",
     "display": "standalone",
+    "orientation": "portrait-primary",
     "background_color": "#f4f4f4",
     "theme_color": "#333333",
     "icons": [
@@ -16,6 +19,14 @@
         "sizes": "512x512",
         "type": "image/png"
       }
-    ]
+    ],
+    "serviceworker": {
+      "src": "service-worker.js",
+      "scope": "./",
+      "update_via_cache": "all"
+    },
+    "categories": ["utilities", "productivity", "tools"],
+    "dir": "ltr",
+    "lang": "es"
   }
   
