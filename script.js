@@ -6,6 +6,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const qrReaderElement = document.getElementById("qr-reader");
     const resultContainer = document.getElementById("result");
+    const cameraSelect = document.createElement("select");
+    cameraSelect.id = "camera-select";
+    document.body.insertBefore(cameraSelect, qrReaderElement);
     let qrReader;
 
     // Cargar datos guardados en LocalStorage
@@ -25,16 +28,36 @@ document.addEventListener("DOMContentLoaded", () => {
 
     Html5Qrcode.getCameras().then(devices => {
         if (devices.length > 0) {
-            let cameraId = devices[0].id;
-            qrReader = new Html5Qrcode("qr-reader");
-            qrReader.start(
-                cameraId,
-                { fps: 15, qrbox: { width: 300, height: 300 } },
-                onScanSuccess,
-                onScanFailure
-            ).catch(err => console.error("Error iniciando escáner", err));
+            devices.forEach(device => {
+                let option = document.createElement("option");
+                option.value = device.id;
+                option.text = device.label || `Cámara ${cameraSelect.length + 1}`;
+                cameraSelect.appendChild(option);
+            });
+
+            cameraSelect.addEventListener("change", () => {
+                if (qrReader) {
+                    qrReader.stop().then(() => {
+                        startScanner(cameraSelect.value);
+                    }).catch(err => console.error("Error deteniendo escáner", err));
+                } else {
+                    startScanner(cameraSelect.value);
+                }
+            });
+
+            startScanner(devices[0].id); // Iniciar con la primera cámara por defecto
         } else {
             resultContainer.innerText = "No se encontraron cámaras disponibles.";
         }
     }).catch(err => console.error("Error obteniendo cámaras", err));
+
+    function startScanner(cameraId) {
+        qrReader = new Html5Qrcode("qr-reader");
+        qrReader.start(
+            cameraId,
+            { fps: 15, qrbox: { width: 300, height: 300 } },
+            onScanSuccess,
+            onScanFailure
+        ).catch(err => console.error("Error iniciando escáner", err));
+    }
 });
